@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers.cities_router import router as cities_touter
+from routers.cities_router import router as cities
+from routers.weather_router import router as wether
 
 app = FastAPI()
 
@@ -20,4 +21,6 @@ app.add_middleware(
 )
 
 
-app.include_router(cities_touter)
+app.include_router(cities)
+
+app.include_router(cities)
