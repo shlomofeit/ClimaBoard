@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from routers.cities_router import router as cities_touter
 
 app = FastAPI()
 
@@ -19,6 +20,4 @@ app.add_middleware(
 )
 
 
-@app.get("/")
-async def main():
-    return {"message": "test"}
+app.include_router(cities_touter)

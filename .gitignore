@@ -26,3 +26,5 @@ dist-ssr
 
 # backend-python-fastapi
 .venv
+__pycache__/
+*.pyc
