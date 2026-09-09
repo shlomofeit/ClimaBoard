@@ -36,7 +36,7 @@ def get_coordinates(city: str):
     return cities_list
 
 
-def get_current_weather(lat: float, lon: float):
+def get_current_weather(lat: str, lon: str):
 
     url = "https://api.open-meteo.com/v1/forecast"
 
@@ -68,7 +68,7 @@ def get_current_weather(lat: float, lon: float):
     }
 
 
-def get_forecast_weather(lat: float, lon: float):
+def get_forecast_weather(lat: str, lon: str):
 
     url = "https://api.open-meteo.com/v1/forecast"
 
@@ -76,10 +76,14 @@ def get_forecast_weather(lat: float, lon: float):
         "latitude": lat,
         "longitude": lon,
         "daily": [
-            "temperature_2m",
-            "precipitation",
-            "relative_humidity_2m",
-            "wind_speed_10m",
+            "temperature_2m_min",
+            "temperature_2m_max",
+            "relative_humidity_2m_min",
+            "relative_humidity_2m_max",
+            "wind_speed_10m_min",
+            "wind_speed_10m_max",
+            "precipitation_probability_max",
+            "weather_code",
         ],
     }
 
@@ -97,11 +101,26 @@ def get_forecast_weather(lat: float, lon: float):
     times = daily.get("time")
     temp_min = daily.get("temperature_2m_min")
     temp_max = daily.get("temperature_2m_max")
+    relative_min = daily.get("relative_humidity_2m_min")
+    relative_max = daily.get("relative_humidity_2m_max")
+    wind_min = daily.get("wind_speed_10m_min")
+    wind_max = daily.get("wind_speed_10m_max")
+    precipitation = daily.get("precipitation_probability_max")
+    weather_code = daily.get("weather_code")
 
     forecast_list = []
     for i in range(len(times)):
         forecast_list.append(
-            {"date": times[i], "temp_min": temp_min[i], "temp_max": temp_max[i]}
+            {
+                "date": times[i],
+                "temp_min": temp_min[i],
+                "temp_max": temp_max[i],
+                "humidity": (relative_min[i] + relative_max[i]) / 2,
+                "wind_min": wind_min[i],
+                "wind_max": wind_max[i],
+                "precipitation": precipitation[i],
+                "weather_code": weather_code[i],
+            }
         )
 
     return forecast_list
